@@ -622,6 +622,19 @@ class AudioUtilities(object):
         return speakers
 
     @staticmethod
+    def GetMicrophones():
+        """
+        get the microphones
+        """
+        deviceEnumerator = comtypes.CoCreateInstance(
+            CLSID_MMDeviceEnumerator,
+            IMMDeviceEnumerator,
+            comtypes.CLSCTX_INPROC_SERVER)
+        mics = deviceEnumerator.GetDefaultAudioEndpoint(
+                    EDataFlow.eCapture.value, ERole.eMultimedia.value)
+        return mics
+
+    @staticmethod
     def GetAudioSessionManager():
         speakers = AudioUtilities.GetSpeakers()
         if speakers is None:
