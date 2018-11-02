@@ -713,3 +713,25 @@ class AudioUtilities(object):
             if dev is not None:
                 devices.append(AudioUtilities.CreateDevice(dev))
         return devices
+
+    @staticmethod
+    def GetAllActiveDevices():
+        devices = []
+        deviceEnumerator = comtypes.CoCreateInstance(
+            CLSID_MMDeviceEnumerator,
+            IMMDeviceEnumerator,
+            comtypes.CLSCTX_INPROC_SERVER)
+        if deviceEnumerator is None:
+            return devices
+
+        collection = deviceEnumerator.EnumAudioEndpoints(
+            EDataFlow.eAll.value, DEVICE_STATE.ACTIVE.value)
+        if collection is None:
+            return devices
+
+        count = collection.GetCount()
+        for i in range(count):
+            dev = collection.Item(i)
+            if dev is not None:
+                devices.append(AudioUtilities.CreateDevice(dev))
+        return devices
