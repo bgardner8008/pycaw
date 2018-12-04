@@ -502,8 +502,10 @@ class AudioDevice(object):
     """
     http://stackoverflow.com/a/20982715/185510
     """
-    def __init__(self, id, state, properties):
+    def __init__(self, dev, id, state, properties):
         self.id = id
+        # dev is the IMMDevice*
+        self.dev = dev
         self.state = state
         self.properties = properties
 
@@ -611,7 +613,8 @@ class AudioUtilities(object):
     @staticmethod
     def GetDefaultSpeaker():
         """
-        get the default speaker (1st render + multimedia) device
+        get the default speaker (1st render + multimedia) device.
+        returns IMMDevice*
         """
         deviceEnumerator = comtypes.CoCreateInstance(
             CLSID_MMDeviceEnumerator,
@@ -624,7 +627,8 @@ class AudioUtilities(object):
     @staticmethod
     def GetDefaultMicrophone():
         """
-        get the default microphone
+        get the default microphone.
+        Returns IMMDevice*
         """
         deviceEnumerator = comtypes.CoCreateInstance(
             CLSID_MMDeviceEnumerator,
@@ -672,6 +676,7 @@ class AudioUtilities(object):
         return None
 
     @staticmethod
+    # this doesn't seem all that useful without storing dev which is IMMDevice*
     def CreateDevice(dev):
         if dev is None:
             return None
@@ -690,7 +695,7 @@ class AudioUtilities(object):
                 name = str(pk)
                 properties[name] = v
         audioState = AudioDeviceState(state)
-        return AudioDevice(id, audioState, properties)
+        return AudioDevice(dev, id, audioState, properties)
 
     @staticmethod
     def GetAllDevices():
