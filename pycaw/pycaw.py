@@ -502,10 +502,9 @@ class AudioDevice(object):
     """
     http://stackoverflow.com/a/20982715/185510
     """
-    def __init__(self, dev, id, state, properties):
+    def __init__(self, immdevice, id, state, properties):
         self.id = id
-        # dev is the IMMDevice*
-        self.dev = dev
+        self.immdevice = immdevice
         self.state = state
         self.properties = properties
 
@@ -676,7 +675,6 @@ class AudioUtilities(object):
         return None
 
     @staticmethod
-    # this doesn't seem all that useful without storing dev which is IMMDevice*
     def CreateDevice(dev):
         if dev is None:
             return None
