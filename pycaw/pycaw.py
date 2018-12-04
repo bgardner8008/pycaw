@@ -609,30 +609,30 @@ class AudioUtilities(object):
     http://stackoverflow.com/a/20982715/185510
     """
     @staticmethod
-    def GetSpeakers():
+    def GetDefaultSpeaker():
         """
-        get the speakers (1st render + multimedia) device
+        get the default speaker (1st render + multimedia) device
         """
         deviceEnumerator = comtypes.CoCreateInstance(
             CLSID_MMDeviceEnumerator,
             IMMDeviceEnumerator,
             comtypes.CLSCTX_INPROC_SERVER)
-        speakers = deviceEnumerator.GetDefaultAudioEndpoint(
+        speaker = deviceEnumerator.GetDefaultAudioEndpoint(
                     EDataFlow.eRender.value, ERole.eMultimedia.value)
-        return speakers
+        return speaker
 
     @staticmethod
-    def GetMicrophones():
+    def GetDefaultMicrophone():
         """
-        get the microphones
+        get the default microphone
         """
         deviceEnumerator = comtypes.CoCreateInstance(
             CLSID_MMDeviceEnumerator,
             IMMDeviceEnumerator,
             comtypes.CLSCTX_INPROC_SERVER)
-        mics = deviceEnumerator.GetDefaultAudioEndpoint(
+        mic = deviceEnumerator.GetDefaultAudioEndpoint(
                     EDataFlow.eCapture.value, ERole.eMultimedia.value)
-        return mics
+        return mic
 
     @staticmethod
     def GetAudioSessionManager():
